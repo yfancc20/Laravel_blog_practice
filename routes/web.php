@@ -12,5 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $pass = array();
+    $pass['title'] = "testing!";
+    $pass['greeting'] = "Hi!!!!!";
+    return view('main', $pass);
 });
+
+// login, logout, password/email, password/reset, register
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/{username}', function ($username = null) { 
+
+    if ($username == null) {
+        return view('main');
+    } else {
+        return view('home');
+    }
+});
+
+
