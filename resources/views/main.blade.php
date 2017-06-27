@@ -7,6 +7,9 @@
     <title>@yield('title')</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/blog.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     @yield('css-field')
 </head>
 
@@ -23,5 +26,6 @@
 
     @include('layouts.footer')
 </body>
+@yield('js-field')
 
 </html>
