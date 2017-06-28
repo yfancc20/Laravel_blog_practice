@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use DB;
 
 class HomeController extends Controller
 {
@@ -16,13 +18,27 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    /* User's blog's homepage */
+    public function userHome($username = null)
     {
-        return view('home');
+        if ($username == null) {
+            echo "null!!!";
+        } 
+
+        // check user exists
+        $userId = DB::table('users')->where('username', $username)->value('id');
+
+        if ($userId === null) {
+            echo "null person";
+        }
+
+        $posts = DB::table('posts')
+                    ->join('users', 'posts.u_id', '=', 'users.id')
+                    ->where('posts.u_id', '=', $userId)
+                    ->select('posts.*', 'users.username')
+                    ->orderBy('posts.created_at', 'desc')
+                    ->get();
+
+        return view('home')->with('posts', $posts);
     }
 }
