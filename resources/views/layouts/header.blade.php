@@ -6,13 +6,12 @@
     <div class="container">
         <nav class="blog-nav">
             <a id="nav-home" class="blog-nav-item" href="#">Home</a>
-            <a id="nav-festure" class="blog-nav-item" href="#">New features</a>
-            <a id="nav-press" class="blog-nav-item" href="#">Press</a>
             @unless (Auth::check())
                 <a id="nav-login" class="blog-nav-item" href="/login">Login</a>
                 <a id="nav-register" class="blog-nav-item" href="/register">Register</a>
             @endunless
             @if (Auth::check())
+                <a id="nav-new-post" class="blog-nav-item" href="/<?=Auth::user()->username;?>/newpost">New Posts</a>
                 <a class="blog-nav-item" href="/logout">Logout</a>
             @endif
         </nav>
