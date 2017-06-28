@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-sm-8 blog-main">
 
-             @for ($i = 0; $i < 2; $i++)
+             @for ($i = 0; $i < 0; $i++)
                 <div class="blog-post">
                     <h2 class="blog-post-title">{{ $posts[$i]->title }}</h2>
                     <p class="blog-post-meta">{{ $posts[$i]->created_at }} By <a href="#">{{ $posts[$i]->username }}</a></p>

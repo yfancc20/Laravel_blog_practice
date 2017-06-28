@@ -1,5 +1,6 @@
 <?php
     $routeName = Route::currentRouteName();
+    var_dump($routeName);
 ?>
 
 <div class="blog-masthead" style="margin-bottom:50px">
@@ -11,8 +12,8 @@
                 <a id="nav-register" class="blog-nav-item" href="/register">Register</a>
             @endunless
             @if (Auth::check())
-                <a id="nav-new-post" class="blog-nav-item" href="/<?=Auth::user()->username;?>/newpost">New Posts</a>
-                <a class="blog-nav-item" href="/logout">Logout</a>
+                <a id="nav-newpost" class="blog-nav-item" href="/u/<?=Auth::user()->username;?>/newpost">New Posts</a>
+                <a class="blog-nav-item" href="{{ route('logout') }}">Logout</a>
             @endif
         </nav>
     </div>

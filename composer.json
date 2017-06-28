@@ -11,6 +11,7 @@
         "laravelcollective/html": "^5.4"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^2.4",
         "fzaninotto/faker": "~1.4",
         "laracasts/generators": "dev-master",
         "mockery/mockery": "0.9.*",
