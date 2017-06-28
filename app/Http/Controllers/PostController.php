@@ -46,4 +46,35 @@ class PostController extends Controller
             return redirect()->route('home', ['username' => $username]);
         }
     }
+
+
+    /* show the list of posts */
+    public function postlist($username)
+    {
+        // get user id
+        $userId = DB::table('users')->where('username', $username)->value('id');
+
+        // wrong page
+        if ($userId === null || $username == null) {
+            // return view('error_page')
+        }
+
+        // can edit the lists or not
+        $admin = false;
+        if ($userId == Auth::user()->id) {
+            $admin = true;
+        }
+
+        $posts = DB::table('posts')
+                    ->join('users', 'posts.u_id', '=', 'users.id')
+                    ->where('posts.u_id', '=', $userId)
+                    ->select('posts.*', 'users.username')
+                    ->orderBy('posts.created_at', 'desc')
+                    ->get();
+
+        return view('postlist')->with([
+                                    'posts' => $posts,
+                                    'admin' => $admin]);
+
+    }
 }

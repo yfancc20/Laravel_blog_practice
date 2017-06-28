@@ -23,12 +23,14 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
-Route::get('/{username}', 'HomeController@userHome')->name('home');
+Route::get('/home', 'HomeController@index')->name('index');
+
+Route::get('/{username}', 'UserController@userHome')->name('home');
 
 Route::get('/{username}/newpost', 'PostController@newPost');
 
 Route::post('/{username}/newpost', 'PostController@sendPost');
 
-Route::get('/{username}/postlist', 'PostController@postlists');
+Route::get('/{username}/postlist', 'PostController@postlist');
 
 
