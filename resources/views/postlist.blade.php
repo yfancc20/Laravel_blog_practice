@@ -1,3 +1,8 @@
+<?
+    $page = 1;
+    $post = $posts[$page-1];
+?>
+
 @extends('main')
 
 @section('container')
@@ -9,11 +14,16 @@
                         <h3 class="text-center">Article List</h3>
                     </th>
                 </thead>
-                @for ($i = 0; $i < count($posts); $i++)
+                @for ($i = 0; $i < count($post); $i++)
                     <tr>
-                        <td>{{ $posts[$i]->title }}</td>
-                        <td width="20%">{{ $posts[$i]->create_time }}</td>
-                        <td width="10%">{{ $posts[$i]->username }}</td>
+                        <td><a href="{{ route('show_post',[
+                                                        'username' => $username,
+                                                        'url' => $post[$i]->url ]) }}">
+                            {{ $post[$i]->title }}
+                            </a>
+                        </td>
+                        <td width="20%">{{ $post[$i]->create_time }}</td>
+                        <td width="10%">{{ $username }}</td>
                     </tr>
                 @endfor
             </table>

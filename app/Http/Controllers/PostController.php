@@ -28,6 +28,7 @@ class PostController extends Controller
 
             // get current time
             $now = date('Y-m-d H:i:s');
+            $nowDate = date('Y-m-d');
 
             // get inputs from the form
             $input = $request->only('post_title', 'post_content');
@@ -40,6 +41,8 @@ class PostController extends Controller
                 'content' => $input['post_content'],
                 'created_at' => $now,
                 'updated_at' => $now,
+                'create_time' => $nowDate,
+                'update_time' => $nowDate,
                 'url' => $url
             ]);
 
@@ -54,27 +57,96 @@ class PostController extends Controller
         // get user id
         $userId = DB::table('users')->where('username', $username)->value('id');
 
-        // wrong page
+        // check wrong
+        $this->checkWrong($userId, $username);
+
+        $posts = DB::table('posts')
+                    ->where('u_id', $userId)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        $posts = $posts->chunk(10);
+
+        $posts = $posts->toArray();
+        return view('postlist')->with([
+                                    'username' => $username,
+                                    'posts' => $posts]);
+
+    }
+
+
+    /* show the post */
+    public function showPost(Request $request, $username, $url)
+    {
+        // get user id
+        $userId = DB::table('users')->where('username', $username)->value('id');
+
+        // check wrong
+        $this->checkWrong($userId, $username);
+
+        // get this post's information
+        $post = DB::table('posts')
+                    ->where([
+                        ['u_id', '=', $userId],
+                        ['url', '=', $url]])
+                    ->get();
+
+        return view('post')->with([
+                                'username' => $username,
+                                'post' => $post[0]]);
+
+    }
+
+
+    /* edit the post */
+    public function editPost(Request $request, $username)
+    {
+        // get inputs from form
+        $input = $request->only('post_id', 'u_id');
+        
+        // get the post's information
+        $post = DB::table('posts')
+                    ->where([
+                        ['id', '=', $input['post_id']],
+                        ['u_id', '=', $input['u_id']]])
+                    ->get();
+
+        return view('editpost')->with(['post' => $post[0]]);
+    }
+
+
+    /* update the post */
+    public function updatePost(Request $request, $username)
+    {
+        // get inputs from form
+        $input = $request->only('post_id', 'u_id', 'post_title', 'post_content');
+
+        // get user id
+        $userId = Auth::user()->id;
+        
+        // updating
+        DB::table('posts')
+            ->where([
+                ['id', '=', $input['post_id']],
+                ['u_id', '=', $userId] ])
+            ->update([
+                'title' => $input['post_title'],
+                'content' => $input['post_content']
+                ]);
+
+        // get url
+        $url = DB::table('posts')->where('id', $input['post_id'])->value('url');
+        $redirectTo = "/$username" . "/$url";
+
+        return redirect($redirectTo);
+    }
+
+
+    /* check wrong url */
+    private function checkWrong($userId, $username)
+    {
         if ($userId === null || $username == null) {
             // return view('error_page')
         }
-
-        // can edit the lists or not
-        $admin = false;
-        if ($userId == Auth::user()->id) {
-            $admin = true;
-        }
-
-        $posts = DB::table('posts')
-                    ->join('users', 'posts.u_id', '=', 'users.id')
-                    ->where('posts.u_id', '=', $userId)
-                    ->select('posts.*', 'users.username')
-                    ->orderBy('posts.created_at', 'desc')
-                    ->get();
-
-        return view('postlist')->with([
-                                    'posts' => $posts,
-                                    'admin' => $admin]);
-
     }
 }

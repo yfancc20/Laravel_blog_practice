@@ -1,40 +1,30 @@
-<?
-    $page = 1;
-?>
-
 @extends('main')
 
 @section('container')
-
-    <div class="blog-header">
-        <h1 class="blog-title">The Bootstrap Blog</h1>
-        <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
-    </div>
     <div class="row">
         <div class="col-sm-8 blog-main">
-
-             @for ($i = 0; $i < count($post); $i++)
-                <div class="blog-post-home">
-                    <h3>{{ $post[$i]->title }}</h3>
-                    <div class="blog-post-content col-sm-6"> 
-                        {!! nl2br($post[$i]->content) !!}
+            <div class="blog-post">
+                <h2 class="blog-post-title">{{ $post->title }}</h2>
+                <p class="blog-post-meta">
+                    {{ $post->create_time }} By <a href="#">{{ $username }}</a>
+                </p>
+                @if (Auth::check() && $username == Auth::user()->username)
+                    <div class="blog-post-meta">
+                        <form role="form" method="POST" action="{{ route('edit_post', ['username' => $username]) }}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                            <input type="hidden" name="u_id" value="{{ Auth::user()->id }}">
+                            <button type="submit" class="btn btn-success btn-sm">Edit</button>
+                        </form>
                     </div>
-                    <div class="col-sm-2 blog-post-read">
-                        <a href="/{{ $username }}/{{ $post[$i]->url }}" style="text-decoration: none">
-                            ・・⋯⋯
-                        </a>
-                    </div>
-                    <p class="blog-post-meta col-sm-4">{{ $post[$i]->create_time }} By <a href="#">{{ $username }}</a></p>
-                    
+                @endif
+                <div class="blog-post-content"> 
+                    {!! nl2br($post->content) !!}
                 </div>
-            @endfor
-
-            <nav>
-                <ul class="pager">
-                  <li><a href="#">Previous</a></li>
-                  <li><a href="#">Next</a></li>
-                </ul>
-            </nav>
+                <p class="blog-post-last">
+                    Last modified: {{ $post->update_time }}
+                </p>
+            </div>
         </div>
 
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
@@ -71,4 +61,3 @@
 
     </div>
 @stop
-

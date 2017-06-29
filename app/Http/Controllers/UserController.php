@@ -33,12 +33,17 @@ class UserController extends Controller
         }
 
         $posts = DB::table('posts')
-                    ->join('users', 'posts.u_id', '=', 'users.id')
-                    ->where('posts.u_id', '=', $userId)
-                    ->select('posts.*', 'users.username')
-                    ->orderBy('posts.created_at', 'desc')
+                    ->where('u_id', $userId)
+                    ->orderBy('created_at', 'desc')
+                    ->offset(0)
+                    ->limit(4)
                     ->get();
 
-        return view('home')->with('posts', $posts);
+        // $posts = $posts->chunk(4);
+        $post = $posts->toArray();
+
+        return view('home')->with([
+                                'post' => $post,
+                                'username' => $username ]);
     }
 }
