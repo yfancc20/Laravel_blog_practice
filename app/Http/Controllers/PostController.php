@@ -9,6 +9,9 @@ use Auth;
 
 class PostController extends Controller
 {
+
+    protected $pageSplit = 10;
+
     /* Show a post page */
     public function newPost($username) 
     {
@@ -60,17 +63,24 @@ class PostController extends Controller
         // check wrong
         $this->checkWrong($userId, $username);
 
+        // counte total pages
+        $postCount = DB::table('posts')->where('u_id', $userId)->count();
+        $pageTotal = ceil($postCount / $this->pageSplit);
+
         $posts = DB::table('posts')
                     ->where('u_id', $userId)
                     ->orderBy('created_at', 'desc')
+                    ->limit($this->pageSplit)
                     ->get();
 
-        $posts = $posts->chunk(10);
-
         $posts = $posts->toArray();
+        $page = 1;
+
         return view('postlist')->with([
                                     'username' => $username,
-                                    'posts' => $posts]);
+                                    'posts' => $posts,
+                                    'page' => $page,
+                                    'pageTotal' => $pageTotal ]);
 
     }
 
@@ -139,6 +149,40 @@ class PostController extends Controller
         $redirectTo = "/$username" . "/$url";
 
         return redirect($redirectTo);
+    }
+
+
+    /* change the page the post (home) */
+    public function pagePostlist($username, $page)
+    {
+        // check user exists
+        $userId = DB::table('users')->where('username', $username)->value('id');
+
+        $this->checkWrong($userId, $username);
+
+        // count offset
+        $offset = ($page - 1) * $this->pageSplit;
+
+        // counte total pages
+        $postCount = DB::table('posts')->where('u_id', $userId)->count();
+        $pageTotal = ceil($postCount / $this->pageSplit);
+
+
+        $posts = DB::table('posts')
+                    ->where('u_id', $userId)
+                    ->orderBy('create_time', 'desc')
+                    ->offset($offset)
+                    ->limit($this->pageSplit)
+                    ->get();
+
+        $posts = $posts->toArray();
+
+        return view('postlist')->with([
+                                    'username' => $username,
+                                    'posts' => $posts,
+                                    'page' => $page,
+                                    'pageTotal' => $pageTotal ]);
+
     }
 
 

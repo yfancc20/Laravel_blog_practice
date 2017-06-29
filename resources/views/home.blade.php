@@ -1,6 +1,18 @@
-<?
-    $page = 1;
-?>
+{{-- 
+Variable passing here:
+    $post (stdClass)
+    $username (string)
+    $page (int)
+    $pageTotal (int)
+ --}}
+ <?
+    $nextPage = "/$username" . "/page_" . ($page + 1);
+    if ($page - 1 == 1) {
+        $prevPage = "/$username";
+    } else {
+        $prevPage = "/$username" . "/page_" . ($page - 1);
+    }
+ ?>
 
 @extends('main')
 
@@ -31,8 +43,16 @@
 
             <nav>
                 <ul class="pager">
-                  <li><a href="#">Previous</a></li>
-                  <li><a href="#">Next</a></li>
+                    @if ($page == 1)
+                        <li><a href="#" class="btn btn-xs disabled">Newer</a></li>
+                        <li><a href="{{ $nextPage }}" class="btn btn-xs">Older</a></li>   
+                    @elseif ($page == $pageTotal)
+                        <li><a href="{{ $prevPage }}" class="btn btn-xs">Newer</a></li>
+                        <li><a href="#" class="btn btn-xs disabled">Older</a></li>
+                    @else
+                        <li><a href="{{ $prevPage }}" class="btn btn-xs">Newer</a></li>
+                        <li><a href="{{ $nextPage }}" class="btn btn-xs">Older</a></li>
+                    @endif
                 </ul>
             </nav>
         </div>
