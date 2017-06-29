@@ -28,6 +28,11 @@ h6, .h6 {
  * Override Bootstrap's default container.
  */
 
+.container {
+  min-height: 100%;
+  margin-bottom: 20px;
+}
+
 @media (min-width: 1200px) {
   .container {
     width: 970px;
@@ -193,17 +198,29 @@ h6, .h6 {
   font-size: 20px;
 }
 
+
+
+/*
+ * Seeting
+ */
+.setting-area {
+  width: 100%;
+}
+
+
 /*
  * Footer
  */
 
 .blog-footer {
-  padding: 40px 0;
+  height: 60px;
+  padding: 20px 0;
   color: #999;
   text-align: center;
   background-color: #f9f9f9;
   border-top: 1px solid #e5e5e5;
+  margin-bottom: 30px;
 }
 .blog-footer p:last-child {
-  margin-bottom: 0;
+  margin-bottom: 0px;
 }
