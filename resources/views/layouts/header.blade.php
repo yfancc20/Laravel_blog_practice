@@ -11,8 +11,9 @@
                 <a id="nav-register" class="blog-nav-item" href="/register">Register</a>
             @endunless
             @if (Auth::check())
-                <a id="nav-newpost" class="blog-nav-item" href="/<?=Auth::user()->username;?>/newpost">New Posts</a>
-                <a id="nav-newpost" class="blog-nav-item" href="/<?=Auth::user()->username;?>/postlist">Post List</a>
+                <a id="nav-newpost" class="blog-nav-item" href="/{{ Auth::user()->username }}/newpost">New Posts</a>
+                <a id="nav-newpost" class="blog-nav-item" href="/{{ Auth::user()->username }}/postlist">Post List</a>
+                <a id="nav-setting" class="blog-nav-item" href="/{{ Auth::user()->username }}/setting">Setting</a>
                 <a class="blog-nav-item" href="{{ route('logout') }}">Logout</a>
             @endif
         </nav>

@@ -41,5 +41,11 @@ Route::get('/{username}/page_{page}', 'HomeController@pageHome')
 Route::get('/{username}/postlist/page_{page}', 'PostController@pagePostlist')
                                                             ->where('page', '[0-9]+')
                                                             ->name('page_postlist');
+Route::get('/{username}/setting', 'UserController@showSetting');
+
+
+Route::post('/{username}/updatePersonal', 'UserController@updatePersonal')
+                                                            ->name('update_personal');
+Route::get('/{username}/setting/personal', 'UserController@setPersonal');
 
 

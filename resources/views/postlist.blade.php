@@ -42,7 +42,10 @@ Varaible passed:
 
             <nav>
                 <ul class="pager">
-                    @if ($page == 1)
+                    @if ($page == 1 && $pageTotal == 1)
+                        <li><a href="#" class="btn btn-xs disabled">Newer</a></li>
+                        <li><a href="#" class="btn btn-xs disabled">Older</a></li>
+                    @elseif ($page == 1)
                         <li><a href="#" class="btn btn-xs disabled">Newer</a></li>
                         <li><a href="{{ $nextPage }}" class="btn btn-xs">Older</a></li>   
                     @elseif ($page == $pageTotal)
