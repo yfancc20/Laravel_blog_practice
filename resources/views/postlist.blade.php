@@ -1,11 +1,19 @@
- <?
+{{-- 
+Varaible passed:
+    $posts (Array)
+    $page (int)
+    $pageTotal (int)
+    $username (string)
+--}}
+
+<?
     $nextPage = "/$username" . "/postlist/page_" . ($page + 1);
     if ($page - 1 == 1) {
         $prevPage = "/$username" . "/postlist";
     } else {
         $prevPage = "/$username" . "/postlist/page_" . ($page - 1);
     }
- ?>
+?>
 
 @extends('main')
 
