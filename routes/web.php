@@ -30,6 +30,7 @@ Route::get('/{username}/newpost', 'PostController@newPost');
 Route::post('/{username}/newpost', 'PostController@sendPost')->name('send_post');
 Route::post('/{username}/editpost', 'PostController@editPost')->name('edit_post');
 Route::post('/{username}/updatepost', 'PostController@updatePost')->name('update_post');
+Route::post('/{username}/deletepost', 'PostController@deletePost')->name('delete_post');
 Route::get('/{username}/postlist', 'PostController@postlist');
 Route::get('/{username}/{url}', 'PostController@showPost')
                                                 ->where('url', '[0-9]+')

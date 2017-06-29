@@ -152,6 +152,37 @@ class PostController extends Controller
     }
 
 
+    /* delete the post */
+    public function deletePost(Request $request, $username)
+    {
+        // get user id
+        $userId = DB::table('users')->where('username', $username)->value('id');
+
+        // check wrong
+        $this->checkWrong($userId, $username);
+
+        // get inputs from form
+        $input = $request->only('post_id', 'u_id');
+
+        $updatedAt = $this->getUpdatedAt();
+
+        // mark the post
+        DB::table('posts')
+            ->where([
+                ['id', '=', $input['post_id']],
+                ['u_id', '=', $userId] ])
+            ->update([
+                'updated_at' => $updatedAt,
+                'mark' => 1
+                ]);
+
+        $redirectTo = "/$username";
+
+        return redirect($redirectTo);
+
+    }
+
+
     /* change the page the post (home) */
     public function pagePostlist($username, $page)
     {
@@ -192,5 +223,10 @@ class PostController extends Controller
         if ($userId === null || $username == null) {
             // return view('error_page')
         }
+    }
+
+    private function getUpdatedAt()
+    {
+        return date("Y-m-d H:i:s");
     }
 }

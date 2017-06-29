@@ -14,17 +14,23 @@
             <h2 class="text-center">
                 @if (!isset($post))
                     發表新文章
-                    <? $route = route('send_post', ['username' => Auth::user()->username]);
-                       $post = new stdClass();
-                       $post->title = "";
-                       $post->content = "";
+                    <? 
+                        $route = route('send_post', ['username' => Auth::user()->username]);
+                        $post = new stdClass();
+                        $post->title = "";
+                        $post->content = "";
                     ?>
                 @else
                     編輯文章
-                    <? $route = route('update_post', [
+                    <?  
+                        $route = route('update_post', [
                                             'username' => Auth::user()->username,
                                             'post_id' => $post->id, 
-                                            'u_id' => Auth::user()->id ]); 
+                                            'u_id' => Auth::user()->id ]);
+                        $routeD = route('delete_post', [
+                                            'username' => Auth::user()->username,
+                                            'post_id' => $post->id, 
+                                            'u_id' => Auth::user()->id ]);  
                     ?>
                 @endif      
             </h2>
@@ -42,6 +48,10 @@
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">送出</button>
                     </div>
+                </form>
+                <form role="form" method="POST" action="{{ $routeD }}">
+                    {{ csrf_field() }}
+                    @yield('delete-button')
                 </form>
             </div>
         </div>
