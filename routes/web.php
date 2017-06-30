@@ -44,8 +44,14 @@ Route::get('/{username}/postlist/page_{page}', 'PostController@pagePostlist')
 Route::get('/{username}/setting', 'UserController@showSetting');
 
 
-Route::post('/{username}/updatePersonal', 'UserController@updatePersonal')
+Route::post('/{username}/setting/updatePersonal', 'UserController@updatePersonal')
                                                             ->name('update_personal');
+Route::post('/{username}/setting/updateBasic', 'UserController@updateBasic')
+                                                            ->name('update_basic');
+Route::post('/{username}/setting/updatePosts', 'UserController@updatePosts')
+                                                            ->name('update_posts');
 Route::get('/{username}/setting/personal', 'UserController@setPersonal');
+Route::get('/{username}/setting/basic', 'UserController@setBasic');
+Route::get('/{username}/setting/posts', 'UserController@setPosts');
 
 

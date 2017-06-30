@@ -19,13 +19,16 @@ class UserController extends Controller
     /* Show the setting default page */
     public function showSetting($username) 
     {
+        $this->checkUser($username, Auth::user()->username);
         // show basic setting
-        return $this->setPersonal($username);
+        return $this->setBasic($username);
     }
 
 
+    /* show personal setting */
     public function setPersonal($username)
     {
+        $this->checkUser($username, Auth::user()->username);
         // get user's id
         $userId = Auth::user()->id;
 
@@ -40,9 +43,23 @@ class UserController extends Controller
     }
 
 
+    /* show basic setting */
+    public function setBasic($username)
+    {
+        $this->checkUser($username, Auth::user()->username);
+
+        $userId = Auth::user()->id;
+
+        $blogs = DB::table('blogs')->where('u_id', $userId)->get();
+
+        return view('setting.basic')->with(['blog' => $blogs[0]]);
+    }
+
+
     // update personal data
     public function updatePersonal(Request $request, $username)
     {
+        $this->checkUser($username, Auth::user()->username);
         // get user's id
         $userId = Auth::user()->id;
 
@@ -94,5 +111,42 @@ class UserController extends Controller
         }
 
         return back();
+    }
+
+
+    // update blog data
+    public function updateBasic(Request $request, $username)
+    {
+        $this->checkUser($username, Auth::user()->username);
+        // get user's id
+        $userId = Auth::user()->id;
+
+        // get inputs from the form
+        $input = $request->only('blog_title', 'blog_desc', 'a_title', 'a_content');
+  
+        // update information
+        DB::table('blogs')->where('id', $userId)
+                          ->update([
+                                'title' => $input['blog_title'],
+                                'desc' => $input['blog_desc'],
+                                'a_title' => $input['a_title'],
+                                'a_content' => $input['a_content']
+                                ]);
+
+        return back();
+    }
+
+
+
+
+
+
+    /* check user name */
+    private function checkUser($username1, $username2)
+    {
+        if ($username1 != $username2) {
+            return view('errors.404');
+        }
+
     }
 }
