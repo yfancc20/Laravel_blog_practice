@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use DB;
+use App\User;
+use App\Posts;
 
 class HomeController extends Controller
 {
@@ -25,72 +26,19 @@ class HomeController extends Controller
     }
 
     /* User's blog's homepage */
-    public function userHome($username = null)
+    public function userHome(User $user, $page = 1)
     {
-        if ($username == null) {
-            echo "null!!!";
-        } 
+        // some variables
+        $userId = $user->id;
+        \Debugbar::info($page);
 
-        // check user exists
-        $userId = DB::table('users')->where('username', $username)->value('id');
-
-        if ($userId === null) {
-            echo "null person";
-        }
-
-        // counte total pages
-        $postCount = DB::table('posts')->where('u_id', $userId)->count();
-        $pageTotal = ceil($postCount / $this->pageSplit);
-
-        $posts = DB::table('posts')
-                    ->where('u_id', $userId)
-                    ->orderBy('created_at', 'desc')
-                    ->offset(0)
-                    ->limit($this->pageSplit)
-                    ->get();
-
-        // $posts = $posts->chunk(4);
-        $post = $posts->toArray();
-        $page = 1;
+        // get total page and posts of the page (1st page)
+        $pageTotal = Posts::getPageTotal($userId);
+        $pagePosts = Posts::getPagePosts($userId, $page);
 
         return view('home')->with([
-                                'post' => $post,
-                                'username' => $username, 
-                                'page' => $page,
-                                'pageTotal' => $pageTotal ]);
-    }
-
-
-    /* change the page the post (home) */
-    public function pageHome($username, $page)
-    {
-        // check user exists
-        $userId = DB::table('users')->where('username', $username)->value('id');
-
-        if ($userId === null) {
-            echo "null person";
-        }
-
-        // count offset
-        $offset = ($page - 1) * $this->pageSplit;
-
-        // counte total pages
-        $postCount = DB::table('posts')->where('u_id', $userId)->count();
-        $pageTotal = ceil($postCount / $this->pageSplit);
-
-        $posts = DB::table('posts')
-                    ->where('u_id', $userId)
-                    ->orderBy('created_at', 'desc')
-                    ->offset($offset)
-                    ->limit($this->pageSplit)
-                    ->get();
-
-        // $posts = $posts->chunk(4);
-        $post = $posts->toArray();
-
-        return view('home')->with([
-                                'post' => $post,
-                                'username' => $username,
+                                'post' => $pagePosts,
+                                'username' => $user->username, 
                                 'page' => $page,
                                 'pageTotal' => $pageTotal ]);
     }

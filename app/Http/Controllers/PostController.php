@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use App\User;
 use stdClass;
 
 
@@ -14,26 +15,27 @@ class PostController extends Controller
     protected $pageSplit = 10;
 
     /* Show a post page */
-    public function newPost($username) 
+    public function newPost(User $user) 
     {
         // check user
-        if (Auth::user()->username == $username) {
-            $post = new stdClass();
-            $post->id = "";
-            $post->title = "";
-            $post->content = "";
-            $post->createDate = date("Y-m-d");
-            $post->updateDate = date("Y-m-d");
+        echo "ok";
+        // if (Auth::user()->username == $username) {
+        //     $post = new stdClass();
+        //     $post->id = "";
+        //     $post->title = "";
+        //     $post->content = "";
+        //     $post->createDate = date("Y-m-d");
+        //     $post->updateDate = date("Y-m-d");
 
-            // two types of route in newpost.blade.php
-            $route = route('send_post', ['username' => $username]);
-            $routeDelete = "";
+        //     // two types of route in newpost.blade.php
+        //     $route = route('send_post', ['username' => $username]);
+        //     $routeDelete = "";
 
-            return view('/newpost')->with([
-                                        'post' => $post,
-                                        'route' => $route,
-                                        'routeDelete' => $routeDelete ]);
-        }
+        //     return view('/newpost')->with([
+        //                                 'post' => $post,
+        //                                 'route' => $route,
+        //                                 'routeDelete' => $routeDelete ]);
+        // }
     }
 
     /* Send a post from the form */
