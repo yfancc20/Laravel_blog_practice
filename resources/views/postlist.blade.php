@@ -30,7 +30,7 @@ Varaible passed:
                     <tr>
                         <td><a href="{{ route('show_post',[
                                                         'username' => $username,
-                                                        'url' => $posts[$i]->url ]) }}">
+                                                        'post_id' => $posts[$i]->id ]) }}">
                             {{ $posts[$i]->title }}
                             </a>
                         </td>

@@ -28,28 +28,33 @@ Route::get('/home', 'HomeController@index')->name('index');
 // user's homepage
 Route::prefix('{user}')->group(function () {  
     Route::get('/', 'HomeController@userHome')->name('home');
-    Route::get('page_{page}', 'HomeController@userHome')
-                                                    ->where('page', '[0-9]+')
-                                                    ->name('page_post');
+    Route::get('page_{page}', 'HomeController@userHome')->where('page', '[0-9]+')
+                                                        ->name('page_post');
+    Route::get('postlist', 'PostController@postlist');
+    Route::get('postlist/page_{page}', 'PostController@postlist')->where('page', '[0-9]+')
+                                                                 ->name('page_postlist');
 
-    Route::get('newpost', 'PostController@newPost');
-    Route::post('newpost', 'PostController@sendPost')->name('send_post');
+    Route::get('{url}', 'PostController@showPost')
+                                                ->where('url', '[0-9]+')
+                                                ->name('show_post');
+
+    // these actions need auth and username corresponding.
+    Route::middleware(['auth', 'auth.username'])->group(function () {
+        Route::get('newpost', 'PostController@newPost');
+        Route::post('newpost', 'PostController@sendPost')->name('send_post');
+        Route::post('editpost', 'PostController@editPost')->name('edit_post');
+        Route::post('updatepost', 'PostController@updatePost')->name('update_post');
+        Route::post('deletepost', 'PostController@deletePost')->name('delete_post');
+    });
 });
 
 
 
 
-Route::post('/{username}/editpost', 'PostController@editPost')->name('edit_post');
-Route::post('/{username}/updatepost', 'PostController@updatePost')->name('update_post');
-Route::post('/{username}/deletepost', 'PostController@deletePost')->name('delete_post');
 
-Route::get('/{username}/postlist', 'PostController@postlist');
-Route::get('/{username}/{url}', 'PostController@showPost')
-                                                ->where('url', '[0-9]+')
-                                                ->name('show_post');
-Route::get('/{username}/postlist/page_{page}', 'PostController@pagePostlist')
-                                                            ->where('page', '[0-9]+')
-                                                            ->name('page_postlist');
+
+
+
 Route::get('/{username}/setting', 'UserController@showSetting');
 
 

@@ -36,11 +36,11 @@
                     </div>
                     <div class="form-group">
                         <label for="post_date"><h4>發布日期</h4></label>
-                        <input type="text" id="post_date" name="post_date" class="form-control" style="width:auto" value="{{ $post->createDate }}">
+                        <input type="text" id="post_date" name="post_date" class="form-control" style="width:auto" value="{{ $post->create_time }}">
                     </div>
                     <div class="form-group">
                         <label for="update_date"><h4>更新日期</h4></label>
-                        <input type="text" id="update_date" name="update_date" class="form-control" style="width:auto" value="{{ $post->updateDate }}">
+                        <input type="text" id="update_date" name="update_date" class="form-control" style="width:auto" value="{{ $post->update_time }}">
                     </div>
                     <div class="form-group">
                         <label for="author"><h4>作者</h4></label>
@@ -62,13 +62,13 @@
 @section('js-field')
     <script type="text/javascript">
         $(function() {
-            var postDate = new Date("{{ $post->createDate }}");
+            var postDate = new Date("{{ $post->create_time }}");
             $('#post_date').datepicker({ 
                 dateFormat: 'yy-mm-dd',
                 defaultDate: postDate
             });
 
-            var updateDate = new Date("{{ $post->updateDate }}");
+            var updateDate = new Date("{{ $post->update_time }}");
             $('#update_date').datepicker({ 
                 dateFormat: 'yy-mm-dd',
                 defaultDate: updateDate

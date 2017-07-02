@@ -32,7 +32,10 @@ Variable passing here:
                         {!! nl2br($post[$i]->content) !!}
                     </div>
                     <div class="col-sm-2 blog-post-read">
-                        <a href="/{{ $username }}/{{ $post[$i]->url }}" style="text-decoration: none">
+                        <a href="{{ route('show_post', [
+                                                    'username' => $username, 
+                                                    'url' => $post[$i]->url ]) }}" 
+                            style="text-decoration: none">
                             ・・⋯⋯
                         </a>
                     </div>

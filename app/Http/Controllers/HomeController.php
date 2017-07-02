@@ -14,12 +14,6 @@ class HomeController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-    protected $pageSplit = 4;
-
     public function index()
     {
         return view('main');
@@ -30,7 +24,6 @@ class HomeController extends Controller
     {
         // some variables
         $userId = $user->id;
-        \Debugbar::info($page);
 
         // get total page and posts of the page (1st page)
         $pageTotal = Posts::getPageTotal($userId);
