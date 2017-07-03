@@ -40,30 +40,20 @@ Route::prefix('{user}')->group(function () {
 
     // these actions need auth and username corresponding.
     Route::middleware(['auth', 'auth.username'])->group(function () {
+        // about posts
         Route::get('newpost', 'PostController@newPost');
         Route::post('newpost', 'PostController@sendPost')->name('send_post');
         Route::post('editpost', 'PostController@editPost')->name('edit_post');
         Route::post('updatepost', 'PostController@updatePost')->name('update_post');
         Route::post('deletepost', 'PostController@deletePost')->name('delete_post');
+
+        // about setting
+        Route::prefix('setting')->group(function () {
+            Route::get('/', 'UserController@showSetting');
+            Route::get('personal', 'UserController@setPersonal');
+            Route::get('basic', 'UserController@setBasic');
+            Route::post('updatePersonal', 'UserController@updatePersonal')->name('update_personal');
+            Route::post('updateBasic', 'UserController@updateBasic')->name('update_basic');
+        });
     });
 });
-
-
-
-
-
-
-
-
-Route::get('/{username}/setting', 'UserController@showSetting');
-
-
-Route::post('/{username}/setting/updatePersonal', 'UserController@updatePersonal')
-                                                            ->name('update_personal');
-Route::post('/{username}/setting/updateBasic', 'UserController@updateBasic')
-                                                            ->name('update_basic');
-Route::post('/{username}/setting/updatePosts', 'UserController@updatePosts')
-                                                            ->name('update_posts');
-Route::get('/{username}/setting/personal', 'UserController@setPersonal');
-Route::get('/{username}/setting/basic', 'UserController@setBasic');
-Route::get('/{username}/setting/posts', 'UserController@setPosts');

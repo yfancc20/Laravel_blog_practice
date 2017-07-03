@@ -11,7 +11,7 @@ class Posts extends Model
 {
     
     protected $table = "posts"; // table name
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     /* "booting" method of the model */
     protected static function boot()
