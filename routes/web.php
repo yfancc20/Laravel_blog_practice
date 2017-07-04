@@ -12,18 +12,11 @@
 */
 
 
-Route::get('/', function () {
-    $pass = array();
-    $pass['title'] = "testing!";
-    $pass['greeting'] = "Hi!!!!!";
-    return view('main', $pass);
-});
+Route::get('/', 'HomeController@index')->name('index');
 
 // login, logout, password/email, password/reset, register
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
-
-Route::get('/home', 'HomeController@index')->name('index');
 
 // user's homepage
 Route::prefix('{user}')->group(function () {  

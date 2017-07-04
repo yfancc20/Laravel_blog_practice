@@ -31,7 +31,8 @@ class UserController extends Controller
         $blog = new Blogs();
         $blogInfo = $blog->getBlogInfo($userId);
 
-        return view('setting.basic')->with(['blog' => $blogInfo ]);
+        return view('setting.basic')->with(['blog' => $blogInfo,
+                                            'username' => $user->username ]);
     }
 
 
@@ -41,7 +42,8 @@ class UserController extends Controller
         $user = new Users();
         $userInfo = $user->getUserInfo();
         return view('setting.personal')->with([
-                                        'user' => $userInfo ]);
+                                        'user' => $userInfo,
+                                        'username' => $user->username  ]);
     }
 
 
@@ -62,19 +64,5 @@ class UserController extends Controller
         $message = $user->updatePersonal($request);
 
         return back()->withErrors([$message]);
-    }
-
-
-
-
-
-
-    /* check user name */
-    private function checkUser($username1, $username2)
-    {
-        if ($username1 != $username2) {
-            return view('errors.404');
-        }
-
     }
 }
