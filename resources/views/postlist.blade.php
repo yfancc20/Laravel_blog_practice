@@ -23,7 +23,7 @@ Varaible passed:
             <table class="table table-hover table-postlist">
                 <thead>
                     <th colspan="3">
-                        <h3 class="text-center">Article List</h3>
+                        <h3 class="text-center">文章列表</h3>
                     </th>
                 </thead>
                 @for ($i = 0; $i < count($posts); $i++)

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\User;
 use App\Posts;
+use App\Blogs;
 
 
 class PostController extends Controller
@@ -91,16 +92,19 @@ class PostController extends Controller
         // some variables
         $userId = $user->id;
         $split = 10; // how many posts per page
+        $blog = new Blogs();
 
         // get total page and posts of the page (1st page)
         $pageTotal = Posts::getPageTotal($userId, $split);
         $pagePosts = Posts::getPagePosts($userId, $page, $split);
+        $blogInfo = $blog->getBlogInfo($userId);
 
         return view('postlist')->with([
                                     'username' => $user->username,
                                     'posts' => $pagePosts,
                                     'page' => $page,
-                                    'pageTotal' => $pageTotal ]);
+                                    'pageTotal' => $pageTotal,
+                                    'blog' => $blogInfo ]);
 
     }
 
@@ -108,12 +112,15 @@ class PostController extends Controller
     /* show the post */
     public function showPost(Request $request, User $user, $url)
     {
+        $blog = new Blogs();
         // get this post's information
         $post = Posts::getPostInfo($request, $url);
+        $blogInfo = $blog->getBlogInfo($user->id);
 
         return view('post')->with([
                                 'username' => $user->username,
-                                'post' => $post ]);
+                                'post' => $post,
+                                'blog' => $blogInfo ]);
 
     }
 

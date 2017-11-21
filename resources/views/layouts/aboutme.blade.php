@@ -1,10 +1,16 @@
 <div class="sidebar-module sidebar-module-inset">
-    <h4>{{ $blog->a_title or "About me" }}</h4>
+    <h4>
+        @if (isset($blog->a_title) && $blog->a_title != "")
+            {{ $blog->a_title }}
+        @else
+            About me
+        @endif
+    </h4>
     <p>
-        {{
-            $blog->a_content
-             or
-            "Add something about yourself! To let anyone to know about you."
-        }}
+        @if (isset($blog->a_content) && $blog->a_content != "")
+            {{ $blog->a_content }}
+        @else
+            Add something about yourself! To let anyone to know about you.
+        @endif
     </p>
 </div>

@@ -1,8 +1,16 @@
 <div class="blog-header">
     <h1 class="blog-title">
-        {{ $blog->title or "My New Blog"}}
+        @if (isset($blog->title) && $blog->title != "")  
+            {{ $blog->title }}
+        @else
+            My New Blog
+        @endif
     </h1>
     <p class="lead blog-description">
-        {{ $blog->desc or "Add some description of this blog."}}
+        @if (isset($blog->desc) && $blog->desc != "")  
+            {{ $blog->desc }}
+        @else
+            Add some description of this blog.
+        @endif
     </p>
 </div>
